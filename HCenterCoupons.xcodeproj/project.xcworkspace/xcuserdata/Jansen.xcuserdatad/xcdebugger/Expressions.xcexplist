@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "__49-[HomeViewController connectionDidFinishLoading:]_block_invoke_2:HomeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[a subviews]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeViewController addSubViewsInScrolleView]:HomeViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__33-[HomeViewController viewDidLoad]_block_invoke_2:HomeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[a subviews]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController isValidURL:]:ViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[res statusCode]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

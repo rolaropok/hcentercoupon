@@ -1,0 +1,831 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="iNh-yO-VZ3">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="vQd-bX-RwL">
+            <objects>
+                <navigationController definesPresentationContext="YES" navigationBarHidden="YES" id="iNh-yO-VZ3" sceneMemberID="viewController">
+                    <nil key="simulatedTopBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="9DP-ps-n9z">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="GAh-Dd-Myg"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yTW-Xk-ug3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2191" y="-148"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_bg.png" id="Xg0-2S-vTf">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Aba-lk-j04">
+                                <rect key="frame" x="81" y="152" width="159" height="74"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="start.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="StartBtnClicked:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="O1g-7M-f6M"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="npy-nv-NHr">
+                                <rect key="frame" x="9" y="338" width="302" height="220"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="OKE-2Y-B7B"/>
+                    <connections>
+                        <outlet property="bannerImage" destination="npy-nv-NHr" id="QOD-ld-G5z"/>
+                        <outlet property="startButton" destination="Aba-lk-j04" id="Vnl-Hb-nIy"/>
+                        <segue destination="upS-Jw-IF6" kind="push" identifier="Home" id="cln-b0-GD5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1718" y="-148"/>
+        </scene>
+        <!--Home View Controller-->
+        <scene sceneID="BTc-Ce-qyd">
+            <objects>
+                <viewController id="JLf-KT-bR9" customClass="HomeViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Rdd-zr-SwB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bgWithText.png" id="zTs-lW-DNP">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Lsu-YC-A3T">
+                                <rect key="frame" x="92" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="policy.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="PoliceBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="1lA-DO-w5B"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="6lg-4h-63B">
+                                <rect key="frame" x="168" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="storelocator.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="StoreLocatorBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="tVN-mW-kIq"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Q3H-H5-bR9">
+                                <rect key="frame" x="244" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="shop.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="ShopOnlineBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="thD-PO-t0q"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="CoS-UG-5a2">
+                                <rect key="frame" x="110" y="11" width="121" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="RefreshButtonClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="A0F-H9-pfB"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RedBackGround.png" id="1NQ-ja-mwL">
+                                <rect key="frame" x="0.0" y="103" width="320" height="399"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="Dso-kh-L4k">
+                                <rect key="frame" x="0.0" y="103" width="320" height="399"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="JLf-KT-bR9" id="bbB-XX-swC"/>
+                                </connections>
+                            </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3Z7-fV-lGT">
+                                <rect key="frame" x="17" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="favorite.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="FavoritesBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="WSQ-Ma-mKQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ixn-kl-b2B">
+                                <rect key="frame" x="-1" y="69" width="65" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="btn_season">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="btn_season_sel"/>
+                                <connections>
+                                    <action selector="clickAssortedCategory:" destination="JLf-KT-bR9" eventType="touchUpInside" id="X6Q-nh-Mgk"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hyN-H6-Klo">
+                                <rect key="frame" x="127" y="69" width="65" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="btn_renovation">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="btn_renovation_sel"/>
+                                <connections>
+                                    <action selector="clickBoyCategory:" destination="JLf-KT-bR9" eventType="touchUpInside" id="2pr-g5-qDV"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="wuF-xO-2vj">
+                                <rect key="frame" x="256" y="69" width="65" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="btn_powercard">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="btn_powercard_sel"/>
+                                <connections>
+                                    <action selector="clickPowerCardCategory:" destination="JLf-KT-bR9" eventType="touchUpInside" id="4G1-zW-Gto"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="AMW-BQ-op0">
+                                <rect key="frame" x="63" y="69" width="65" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="btn_household">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="btn_household_sel"/>
+                                <connections>
+                                    <action selector="clickBabyCategory:" destination="JLf-KT-bR9" eventType="touchUpInside" id="T3n-rq-v6h"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="dBF-YO-mpP">
+                                <rect key="frame" x="192" y="69" width="65" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="btn_electronic">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="btn_electronic_sel"/>
+                                <connections>
+                                    <action selector="clickGirlCategory:" destination="JLf-KT-bR9" eventType="touchUpInside" id="IgP-ko-VCe"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="E9i-6n-Q3F">
+                                <rect key="frame" x="0.0" y="31" width="64" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="btn_back">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backButtonClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="Fj4-Ih-d2A"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="F0h-Nn-Lc0"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="568"/>
+                    <connections>
+                        <outlet property="BackRedBagView" destination="1NQ-ja-mwL" id="hBX-Gf-uhc"/>
+                        <outlet property="HomeScrollView" destination="Dso-kh-L4k" id="H1g-X8-Aia"/>
+                        <outlet property="assortedButton" destination="Ixn-kl-b2B" id="OTi-7y-TYX"/>
+                        <outlet property="babyButton" destination="AMW-BQ-op0" id="rvF-3e-37c"/>
+                        <outlet property="boyButton" destination="hyN-H6-Klo" id="khg-3M-7yK"/>
+                        <outlet property="girlButton" destination="dBF-YO-mpP" id="4sG-3S-yyG"/>
+                        <outlet property="powerCardButton" destination="wuF-xO-2vj" id="jy4-VY-a9e"/>
+                        <segue destination="nxD-uE-bNP" kind="push" identifier="ShopOnline" id="JCf-La-JaT"/>
+                        <segue destination="AmL-R9-yvp" kind="push" identifier="Policy" id="KbZ-KW-TqK"/>
+                        <segue destination="g2q-cI-jtv" kind="push" identifier="Favorites" id="GkN-xw-yBj"/>
+                        <segue destination="x0G-Ac-mwN" kind="push" identifier="MapVIew" id="6rP-Ta-8CZ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8tY-bV-jVb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-638" y="-148"/>
+        </scene>
+        <!--Policy View Controller-->
+        <scene sceneID="wUG-zn-ol7">
+            <objects>
+                <viewController id="AmL-R9-yvp" customClass="PolicyViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dqb-qf-PX0">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bgWithText1.png" id="as7-8i-dev">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="policy_bg.png" id="jMh-ye-PFP">
+                                <rect key="frame" x="6" y="70" width="309" height="429"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="texttext" textAlignment="right" id="UB5-2v-bZT">
+                                <rect key="frame" x="16" y="76" width="288" height="406"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DWz-F5-lyo">
+                                <rect key="frame" x="168" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="storelocator.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="PolicyStoreLocatorBtnClicked:" destination="AmL-R9-yvp" eventType="touchUpInside" id="Pf7-bL-iYZ"/>
+                                    <action selector="StoreLocatorBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="qIs-fm-2st"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="6Jn-by-wWf">
+                                <rect key="frame" x="244" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="shop.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="PolicyShopOnlineBtnClicked:" destination="AmL-R9-yvp" eventType="touchUpInside" id="bSV-iO-Unx"/>
+                                    <action selector="ShopOnlineBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="IRG-ht-G36"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="pCr-OR-MkT">
+                                <rect key="frame" x="92" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="policy_red.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="PoliceBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="f0m-SU-k8R"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4ip-1x-U3V">
+                                <rect key="frame" x="17" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="favorite.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="FavoritesBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="bsz-Hk-8mx"/>
+                                    <action selector="PolicyFavoritesBtnClicked:" destination="AmL-R9-yvp" eventType="touchUpInside" id="IgB-nI-q5L"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mif-og-n1O">
+                                <rect key="frame" x="287" y="32" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="close_button.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="CrossBtnClicked:" destination="AmL-R9-yvp" eventType="touchUpInside" id="30y-Fe-Tlw"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="WxP-ZO-zRy"/>
+                    <connections>
+                        <outlet property="PolicyTextView" destination="UB5-2v-bZT" id="jbC-4i-xaf"/>
+                        <segue destination="nxD-uE-bNP" kind="push" identifier="ShopOnlineFromPolicy" id="npU-0f-EaB"/>
+                        <segue destination="g2q-cI-jtv" kind="push" identifier="PolicyFavorites" id="qdn-rN-3aL"/>
+                        <segue destination="x0G-Ac-mwN" kind="push" identifier="PolicyMapView" id="GqO-20-dYi"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gk4-2y-ITS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1" y="867"/>
+        </scene>
+        <!--Store Locator View Controller-->
+        <scene sceneID="RAZ-SR-qN5">
+            <objects>
+                <viewController id="x0G-Ac-mwN" customClass="StoreLocatorViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Y7N-cT-qDF">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bgWithText1.png" id="57z-x2-ULc">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="OoJ-ay-0jy">
+                                <rect key="frame" x="168" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="map_red.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="StoreLocatorBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="BLg-1M-0wT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ZXF-M2-6xg">
+                                <rect key="frame" x="244" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="shop.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="ShopOnlineBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="dxt-eW-ebd"/>
+                                    <action selector="StoreLocatorShopOnlineBtnClicked:" destination="x0G-Ac-mwN" eventType="touchUpInside" id="eMX-op-B22"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Jsa-wM-DC6">
+                                <rect key="frame" x="92" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="policy.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="PoliceBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="ibZ-nD-gWr"/>
+                                    <action selector="StoreLocatorPolicyBtnClicked:" destination="x0G-Ac-mwN" eventType="touchUpInside" id="m4h-cI-nXI"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map_bg.png" id="HPF-xx-xNz">
+                                <rect key="frame" x="5" y="69" width="309" height="431"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="  אנא בחר עיר" textAlignment="right" minimumFontSize="17" background="CitySearchBgImage.png" id="c4y-Eh-HOR">
+                                <rect key="frame" x="23" y="79" width="275" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="x0G-Ac-mwN" id="CRu-uk-cct"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ISA-jI-U7Q">
+                                <rect key="frame" x="271" y="85" width="18" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="city_search.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <view contentMode="scaleToFill" id="xbO-6H-iw9">
+                                <rect key="frame" x="23" y="121" width="275" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ZPO-gf-bm0">
+                                <rect key="frame" x="287" y="32" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="close_button.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="StoreLocatorCrossBtnClikced:" destination="x0G-Ac-mwN" eventType="touchUpInside" id="hjP-ws-VeP"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="אנא לחץ על אייקון החנות במפה לקבלת הוראות" textAlignment="right" minimumFontSize="17" id="TlU-JF-Xj8">
+                                <rect key="frame" x="23" y="122" width="272" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="9VE-pi-xl4">
+                                <rect key="frame" x="10" y="162" width="300" height="316"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </mapView>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8Jg-cY-VSL">
+                                <rect key="frame" x="278" y="441" width="30" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="minus.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="ZoomInOut:" destination="x0G-Ac-mwN" eventType="touchUpInside" id="ddm-oN-kvE"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="KWu-6G-Y34">
+                                <rect key="frame" x="278" y="407" width="30" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="plus.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="ZoomInOut:" destination="x0G-Ac-mwN" eventType="touchUpInside" id="txy-Ve-0Yd"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="fcn-yA-vWr">
+                                <rect key="frame" x="35" y="120" width="251" height="347"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CityCell" id="X7E-o0-vxY" customClass="HomeCustomCell">
+                                        <rect key="frame" x="0.0" y="13" width="259" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X7E-o0-vxY" id="oo0-Vk-Nyq">
+                                            <rect key="frame" x="0.0" y="0.0" width="259" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vnU-X3-Cjq">
+                                                    <rect key="frame" x="6" y="11" width="246" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="C_NameLab" destination="vnU-X3-Cjq" id="RbD-3v-fOv"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="x0G-Ac-mwN" id="0da-L5-oe4"/>
+                                    <outlet property="delegate" destination="x0G-Ac-mwN" id="TmO-Dw-htL"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="lhS-hA-grk">
+                                <rect key="frame" x="16" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="favorite.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="FavoritesBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="pme-F4-bW6"/>
+                                    <action selector="StoreLocatorFavoritsBtnClicked:" destination="x0G-Ac-mwN" eventType="touchUpInside" id="LbH-tc-hcP"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="NP8-3m-GtQ">
+                        <nil key="title"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="CityTextField" destination="c4y-Eh-HOR" id="I1Z-jl-jEa"/>
+                        <outlet property="MapView" destination="9VE-pi-xl4" id="nUm-uf-lYa"/>
+                        <outlet property="StoreAddressTextField" destination="TlU-JF-Xj8" id="c5N-DD-scs"/>
+                        <outlet property="StoreCityTab" destination="fcn-yA-vWr" id="VY0-sq-EQK"/>
+                        <segue destination="nxD-uE-bNP" kind="push" identifier="StoreLocatorWebView" id="Pmd-ra-WnB"/>
+                        <segue destination="g2q-cI-jtv" kind="push" identifier="StroreLocatorFavorites" id="geh-ER-H3m"/>
+                        <segue destination="AmL-R9-yvp" kind="push" identifier="StoreLocatorPolicyView" id="1GW-O0-mWA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Urm-ki-qbm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1795" y="867"/>
+        </scene>
+        <!--Favorites View Controller-->
+        <scene sceneID="S2r-8v-jEv">
+            <objects>
+                <viewController id="g2q-cI-jtv" customClass="FavoritesViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PhZ-Wy-Tgk">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bgWithText1.png" id="I7l-8g-4el">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qCL-aQ-LAC">
+                                <rect key="frame" x="168" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="storelocator.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="FavoritesStoreLocatorBtnClicked:" destination="g2q-cI-jtv" eventType="touchUpInside" id="ezN-dV-Mbs"/>
+                                    <action selector="PolicyStoreLocatorBtnClicked:" destination="AmL-R9-yvp" eventType="touchUpInside" id="xxM-VW-AAf"/>
+                                    <action selector="StoreLocatorBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="SqD-cC-AJg"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ISx-oD-1Bk">
+                                <rect key="frame" x="244" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="shop.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="FavoritesShopOnlineBtnClicked:" destination="g2q-cI-jtv" eventType="touchUpInside" id="kFX-nj-Ruh"/>
+                                    <action selector="PolicyShopOnlineBtnClicked:" destination="AmL-R9-yvp" eventType="touchUpInside" id="riZ-nP-PZ5"/>
+                                    <action selector="ShopOnlineBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="Rf8-eb-eff"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="76i-mH-bCY">
+                                <rect key="frame" x="92" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="policy.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="FavoritesPolicyBtnClicked:" destination="g2q-cI-jtv" eventType="touchUpInside" id="I63-9L-9o8"/>
+                                    <action selector="PoliceBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="bqs-PN-LQS"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="kvD-jF-stl">
+                                <rect key="frame" x="17" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="fav_red.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="FavoritesBtnClicked:" destination="JLf-KT-bR9" eventType="touchUpInside" id="heE-md-a9G"/>
+                                    <action selector="PolicyFavoritesBtnClicked:" destination="AmL-R9-yvp" eventType="touchUpInside" id="JH5-GR-qy7"/>
+                                </connections>
+                            </button>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mainbg.png" id="ySw-cX-bTz">
+                                <rect key="frame" x="0.0" y="65" width="319" height="435"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="Hee-rw-kob">
+                                <rect key="frame" x="0.0" y="65" width="320" height="435"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="g2q-cI-jtv" id="uf8-4H-K3P"/>
+                                </connections>
+                            </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="nuT-kh-uTE">
+                                <rect key="frame" x="287" y="32" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="close_button.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="CrossBtnClicked:" destination="g2q-cI-jtv" eventType="touchUpInside" id="JLJ-Tr-aTL"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="TDJ-LE-CaZ"/>
+                    <connections>
+                        <outlet property="FavoritScrollView" destination="Hee-rw-kob" id="vlC-C9-WHK"/>
+                        <outlet property="faviriotBgImageView" destination="ySw-cX-bTz" id="Yzy-A8-muq"/>
+                        <segue destination="AmL-R9-yvp" kind="push" identifier="FavoritesPolicy" id="X7C-ss-1nN"/>
+                        <segue destination="nxD-uE-bNP" kind="push" identifier="FavoritesWebView" id="Elf-iR-7RE"/>
+                        <segue destination="x0G-Ac-mwN" kind="push" identifier="FavoritesMapView" id="lcM-bu-b5X"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HTx-AI-IrO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-128" y="-1138"/>
+        </scene>
+        <!--Web Site View Controller-->
+        <scene sceneID="Zb6-7e-oyM">
+            <objects>
+                <viewController storyboardIdentifier="WebSiteViewController" id="nxD-uE-bNP" customClass="WebSiteViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Mpk-gc-wcY">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bgWithText1.png" id="FwJ-nw-KrU">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="UC1-bz-yA4">
+                                <rect key="frame" x="287" y="32" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="close_button.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="CrossBtnClicked:" destination="nxD-uE-bNP" eventType="touchUpInside" id="0ml-yl-hhM"/>
+                                </connections>
+                            </button>
+                            <webView contentMode="scaleToFill" id="XDQ-oD-BBZ">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="delegate" destination="nxD-uE-bNP" id="be8-4n-BFp"/>
+                                </connections>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Aj2-sZ-CKM"/>
+                    <connections>
+                        <outlet property="CouponWebView" destination="XDQ-oD-BBZ" id="nv0-Rt-ESq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U5T-xb-Rim" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1458" y="-1159"/>
+        </scene>
+        <!--Thumb View Controller-->
+        <scene sceneID="Mzv-cl-L1q">
+            <objects>
+                <viewController id="upS-Jw-IF6" customClass="ThumbViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xWr-bS-YEj">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bgWithText.png" id="wcp-mI-h8l">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="EwY-wK-7pW">
+                                <rect key="frame" x="17" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="favorite.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="FavoritesBtnClicked:" destination="upS-Jw-IF6" eventType="touchUpInside" id="MqD-b6-GRP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ClU-B9-qz2">
+                                <rect key="frame" x="92" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="policy.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="PoliceBtnClicked:" destination="upS-Jw-IF6" eventType="touchUpInside" id="9xi-wd-d5X"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="daL-MK-AHK">
+                                <rect key="frame" x="168" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="storelocator.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="StoreLocatorBtnClicked:" destination="upS-Jw-IF6" eventType="touchUpInside" id="cvf-7e-YZ1"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fcS-mx-3bA">
+                                <rect key="frame" x="244" y="514" width="60" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="shop.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="ShopOnlineBtnClicked:" destination="upS-Jw-IF6" eventType="touchUpInside" id="S0L-3j-5fw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Y45-lL-X5g">
+                                <rect key="frame" x="104" y="27" width="121" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="RefreshButtonClicked:" destination="upS-Jw-IF6" eventType="touchUpInside" id="z0o-Yt-UjB"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RedBackGround.png" id="wE9-ag-C0g">
+                                <rect key="frame" x="0.0" y="103" width="320" height="399"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="8Bn-3c-2Wy">
+                                <rect key="frame" x="0.0" y="103" width="320" height="399"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="upS-Jw-IF6" id="Ugj-Up-9ae"/>
+                                </connections>
+                            </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="am1-ZC-y4k">
+                                <rect key="frame" x="192" y="69" width="65" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="btn_electronic">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="btn_electronic_sel"/>
+                                <connections>
+                                    <action selector="clickGirlCategory:" destination="upS-Jw-IF6" eventType="touchUpInside" id="kBg-uO-EEa"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ivh-vi-OT8">
+                                <rect key="frame" x="127" y="69" width="65" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="btn_renovation">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="btn_renovation_sel"/>
+                                <connections>
+                                    <action selector="clickBoyCategory:" destination="upS-Jw-IF6" eventType="touchUpInside" id="Trd-05-Yti"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="HE4-tZ-d21">
+                                <rect key="frame" x="63" y="69" width="65" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="btn_household">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="btn_household_sel"/>
+                                <connections>
+                                    <action selector="clickBabyCategory:" destination="upS-Jw-IF6" eventType="touchUpInside" id="gnO-M3-aNQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xgD-kW-ebG">
+                                <rect key="frame" x="-1" y="69" width="65" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="btn_season">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="btn_season_sel"/>
+                                <connections>
+                                    <action selector="clickAssortedCategory:" destination="upS-Jw-IF6" eventType="touchUpInside" id="rMg-NU-MgQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="iIW-8J-wyG">
+                                <rect key="frame" x="256" y="69" width="65" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="btn_powercard">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="btn_powercard_sel"/>
+                                <connections>
+                                    <action selector="clickPowerCardCategory:" destination="upS-Jw-IF6" eventType="touchUpInside" id="x11-dg-rg6"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="vni-9x-wex"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="568"/>
+                    <connections>
+                        <outlet property="BackRedBagView" destination="wE9-ag-C0g" id="HWL-G4-3HU"/>
+                        <outlet property="HomeScrollView" destination="8Bn-3c-2Wy" id="hTJ-r7-SM9"/>
+                        <outlet property="assortedButton" destination="xgD-kW-ebG" id="osv-MY-Kwx"/>
+                        <outlet property="babyButton" destination="HE4-tZ-d21" id="48t-SL-8dV"/>
+                        <outlet property="boyButton" destination="ivh-vi-OT8" id="nt1-CY-ei2"/>
+                        <outlet property="girlButton" destination="am1-ZC-y4k" id="Fse-sk-3lP"/>
+                        <outlet property="powerCardButton" destination="iIW-8J-wyG" id="REY-VG-lBU"/>
+                        <segue destination="JLf-KT-bR9" kind="push" identifier="Coupons" id="jNL-2M-Ty9"/>
+                        <segue destination="AmL-R9-yvp" kind="push" identifier="Policy" id="OGp-Ge-avo"/>
+                        <segue destination="g2q-cI-jtv" kind="push" identifier="Favorites" id="OjS-Xt-l41"/>
+                        <segue destination="nxD-uE-bNP" kind="push" identifier="ShopOnline" id="aRC-fo-bbX"/>
+                        <segue destination="x0G-Ac-mwN" kind="push" identifier="MapVIew" id="yXA-Kq-6eH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kr8-hx-JK5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1229" y="-134"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="CitySearchBgImage.png" width="584" height="74"/>
+        <image name="RedBackGround.png" width="640" height="795"/>
+        <image name="bgWithText.png" width="640" height="1136"/>
+        <image name="bgWithText1.png" width="640" height="1136"/>
+        <image name="btn_back" width="38" height="12"/>
+        <image name="btn_electronic" width="65" height="33"/>
+        <image name="btn_electronic_sel" width="65" height="33"/>
+        <image name="btn_household" width="65" height="33"/>
+        <image name="btn_household_sel" width="65" height="33"/>
+        <image name="btn_powercard" width="65" height="33"/>
+        <image name="btn_powercard_sel" width="65" height="33"/>
+        <image name="btn_renovation" width="65" height="33"/>
+        <image name="btn_renovation_sel" width="65" height="33"/>
+        <image name="btn_season" width="65" height="33"/>
+        <image name="btn_season_sel" width="65" height="33"/>
+        <image name="city_search.png" width="37" height="45"/>
+        <image name="close_button.png" width="51" height="51"/>
+        <image name="fav_red.png" width="120" height="90"/>
+        <image name="favorite.png" width="120" height="90"/>
+        <image name="home_bg.png" width="640" height="1136"/>
+        <image name="mainbg.png" width="620" height="830"/>
+        <image name="map_bg.png" width="620" height="830"/>
+        <image name="map_red.png" width="120" height="90"/>
+        <image name="minus.png" width="40" height="40"/>
+        <image name="plus.png" width="40" height="40"/>
+        <image name="policy.png" width="120" height="90"/>
+        <image name="policy_bg.png" width="620" height="830"/>
+        <image name="policy_red.png" width="120" height="90"/>
+        <image name="shop.png" width="120" height="90"/>
+        <image name="start.png" width="317" height="147"/>
+        <image name="storelocator.png" width="120" height="90"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="JCf-La-JaT"/>
+        <segue reference="GkN-xw-yBj"/>
+        <segue reference="6rP-Ta-8CZ"/>
+        <segue reference="KbZ-KW-TqK"/>
+    </inferredMetricsTieBreakers>
+</document>

@@ -1,0 +1,1623 @@
+//
+//  HomeViewController.m
+//  CouponApp
+//
+//  Created by parkhya on 8/25/14.
+//  Copyright (c) 2014 parkhya. All rights reserved.
+//
+
+#import "HomeViewController.h"
+#import "HomeCustomCell.h"
+#import "CouponInfo.h"
+#import "DataBase.h"
+#import "WebSiteViewController.h"
+#import "NetworkIndicator.h"
+#import "AMPActivityIndicator.h"
+
+@interface HomeViewController ()<NSURLConnectionDelegate,UIScrollViewDelegate>
+{
+    NSURLConnection *couponConnection,*functionConnection,*refreshConnection;
+    NSMutableArray *likeArr;
+    int likeTag;
+    int pageIndex;
+    BOOL scrollDirectionDetermined;
+    BOOL isSwaped;
+    int offsetx ;
+    int refreshTag;
+    long int status;
+    int pageNo;
+    NSString* workingURL;
+    
+    
+    
+}
+@property (nonatomic,retain) NSMutableData *webData,*webData1,*webData2;
+@end
+
+@implementation HomeViewController
+@synthesize CouponArr;
+
+@synthesize webData,webData1,webData2;
+@synthesize HomeTableView;
+@synthesize progressView;
+@synthesize HomeScrollView;
+@synthesize PreviousButton,NextButton;
+@synthesize BackRedBagView;
+@synthesize pageControl;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    NSLog(@"Coupon Arr Size:%lu",     (unsigned long)[CouponArr count] );
+    scrollDirectionDetermined = NO;
+    isSwaped = NO;
+    pageNo=1;
+    favoriteArr=[[NSMutableArray alloc]init];
+    //CouponArr=[[NSMutableArray alloc]init];
+    likeArr=[[NSMutableArray alloc]init];
+    ViewsArr=[[NSMutableArray alloc]init];
+    
+    pageNo = CouponArr.count;
+    [self addSubViewsInScrolleView];
+    
+//    return;
+    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        [NetworkIndicator startLoading];
+        for(int i =0;i<CouponArr.count; i++)
+        {
+            CouponInfo *Coupon = [CouponArr objectAtIndex:i] ;
+            if([Coupon.isLoaded isEqualToString:@"NO"])
+            {
+                //NSLog(@"1");
+                NSURL *url=[NSURL URLWithString:[Coupon.C_Image stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                UIImage *cImage=[UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+                Coupon.CouponImage = [self mergeImageWith:cImage];
+                //NSLog(@"2");
+                [CouponArr replaceObjectAtIndex:i withObject:Coupon];
+                //NSLog(@"3");
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //[self addSubViewsInScrolleView];
+                    
+                    UIView* a = [[HomeScrollView subviews] objectAtIndex:i];
+                    if(([a subviews] != nil) && ([a subviews].count !=0))
+                    {
+                        
+                        UIImageView* imageView = [[a subviews]objectAtIndex:0];
+                        imageView.image = Coupon.CouponImage;
+                        Coupon.isLoaded = @"YES";
+                        if ([[[a subviews]objectAtIndex:1] isKindOfClass:[UIActivityIndicatorView class]])
+                        {
+                            [[[a subviews]objectAtIndex:1] removeFromSuperview];
+                            
+                        }
+                    }
+                    
+                    //NSLog(@"Loading image ended");
+                    
+                });
+
+            }
+        }
+        
+        [NetworkIndicator stopLoading];
+        //NSLog(@"4");
+        NSLog(@"Loading image ended");
+        
+        
+    });
+}
+
+- (BOOL)isValidURL:(NSURL*)url
+{
+    NSURLRequest *req = [NSURLRequest requestWithURL:url];
+    NSHTTPURLResponse *res = nil;
+    NSError *err = nil;
+    [NSURLConnection sendSynchronousRequest:req returningResponse:&res error:&err];
+    return err==nil && [res statusCode]==200;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+//#pragma mark - table view delegates methods 
+//
+//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return 333;
+//}
+
+
+#pragma mark - home tab btns methods
+
+-(IBAction)FavoritesBtnClicked:(id)sender
+{
+//    UIButton *But=(UIButton*)sender;
+//    if (But.tag==0) {
+//        [FavoritesBtn setImage:[UIImage imageNamed:@"fav_red.png"] forState:UIControlStateNormal];
+//    }
+//    
+//    favoriteArr=[[DataBase getSharedInstance]receiveAllData];
+//    
+//    MainBackGImageView=[[UIImageView alloc]initWithFrame:CGRectMake(-7, 73, 327, 446)];
+//    MainBackGImageView.image=[UIImage imageNamed:@"mainbg.png"];
+//    [self.view addSubview:MainBackGImageView];
+//    
+//    FavoriteTableView=[[UITableView alloc]initWithFrame:CGRectMake(1, 0, 320, 415) style:UITableViewStylePlain];
+//    [FavoriteTableView setBackgroundColor:[UIColor clearColor]];
+//    FavoriteTableView.tag=2;
+//    FavoriteTableView.delegate=self;
+//    FavoriteTableView.dataSource=self;
+//    [MainBackGImageView addSubview:FavoriteTableView];
+    
+    [self performSegueWithIdentifier:@"Favorites" sender:self];
+}
+
+-(IBAction)StoreLocatorBtnClicked:(id)sender
+{
+    [self performSegueWithIdentifier:@"MapVIew" sender:self];
+}
+
+-(IBAction)ShopOnlineBtnClicked:(id)sender
+{
+    [self performSegueWithIdentifier:@"ShopOnline" sender:self];
+}
+
+-(IBAction)PoliceBtnClicked:(id)sender
+{
+[self performSegueWithIdentifier:@"Policy" sender:self];
+}
+
+#pragma mark - NSURLConnectionDelegate
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    
+  //  NSLog(@"response code %ld",(long)[response statusCode]);
+    
+    if (connection==couponConnection) {
+        [webData setLength:0];
+    }else if(connection==functionConnection)
+    {
+        [webData1 setLength:0];
+        
+    }
+    else if(connection == refreshConnection)
+    {
+        [webData2 setLength:0];
+    }
+}
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    if (connection==couponConnection) {
+        [webData appendData:data];
+    }
+    else if(connection==functionConnection)
+    {
+        [webData1 appendData:data];
+    }
+    else if(connection == refreshConnection)
+    {
+        [webData2 appendData:data];
+    }
+
+}
+-(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    
+    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"" message:@"can not Connect to Server" delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
+    [alert show];
+    [self hideLoader];
+       //  isReloading = NO ;
+}
+
+
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    
+    // isReloading = NO ;
+    NSError *err;
+    if (connection==couponConnection) {
+       // NSString *ste=[NSJSONSerialization JSONObjectWithData:webData options:kNilOptions error:&err];
+        NSArray *arr=[NSJSONSerialization JSONObjectWithData:webData options:kNilOptions error:&err];
+      //  NSDictionary *json=[NSJSONSerialization JSONObjectWithData:webData options:kNilOptions error:&err];
+      //  NSLog(@"error %@ ",err);
+        if (arr.count>0) {
+            
+            if ([[arr objectAtIndex:0]objectForKey:@"status"]) {
+                    [self hideLoader];
+              
+            }else{
+        
+                for (int i=0; i<arr.count; i++)
+                {
+                    pageNo++;
+                    NSDictionary *dic=[arr objectAtIndex:i];
+                    CouponInfo *Coupon=[[CouponInfo alloc]init];
+                    Coupon.isLoaded = @"NO";
+                    Coupon.CouponImage= [self mergeImageWith:nil];
+                    Coupon.C_Date=[dic objectForKey:@"c_date"];
+                    Coupon.C_Image=[dic objectForKey:@"c_image"];
+                    Coupon.C_Name=[dic objectForKey:@"c_name"];
+                    Coupon.C_Text=[dic objectForKey:@"c_text"];
+                    Coupon.C_ID=[dic objectForKey:@"id"];
+                    Coupon.To_Date=[dic objectForKey:@"to_date"];
+                    Coupon.Total_Like=[NSString stringWithFormat:@"%@", [dic objectForKey:@"total_like"]];
+                    Coupon.CouponNumber=[NSString stringWithFormat:@"%@",[dic objectForKey:@"coupan_number"]];
+                    
+                                      NSURL *Shareurl=[NSURL URLWithString:[[dic objectForKey:@"c_share_image"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                    
+                    NSURLRequest *Sharerequest   = [NSURLRequest requestWithURL:Shareurl];
+                    [NSURLConnection sendAsynchronousRequest:Sharerequest queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                        
+                        if (connectionError == nil && data != nil)
+                        {
+                            UIImage *image = [UIImage imageWithData:data];
+                            if (image != nil)
+                            {
+                                //dispatch_async(dispatch_get_main_queue(), ^{
+                                Coupon.C_ShareImage=image;
+                                //  });
+                            }
+                            else
+                            {
+                                // NSLog(@"image is not downloaded");
+                            }
+                        }
+                        else if (connectionError != nil)
+                        {
+                            //  NSLog(@"Error %@",[connectionError description]);
+                        }
+                        else
+                        {
+                            // NSLog(@"No data could be downloaded");
+                        }
+                    }];
+                    
+                    
+                    [CouponArr addObject:Coupon];
+            
+                }
+               
+                [self addSubViewsInScrolleView];
+                //[self refreshHomeScrollView:pageIndex];
+                NSLog(@"Finished Loading Coupons");
+                [NetworkIndicator stopLoading];
+                isSwaped = NO;
+                for(int i=0;i<CouponArr.count;i++){
+                     dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                         // Add code here to do background processing
+                         //
+                         //
+                         [NetworkIndicator startLoading];
+                   
+                         NSURL *url=[NSURL URLWithString:[[ CouponArr[i] C_Image] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                        
+                         UIImage *cImage=[UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+                         [CouponArr[i] setCouponImage:[self mergeImageWith:cImage]];
+                    
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             UIView* a = [[HomeScrollView subviews] objectAtIndex:i];
+                        
+                             if(([a subviews] != nil)&&([a subviews].count != 0))
+                             {
+                                 UIImageView* imageView = [[a subviews]objectAtIndex:0];
+                                 imageView.image = [CouponArr[i] CouponImage];
+                                 [CouponArr[i] setIsLoaded:@"YES"];
+                            
+                                 if ([[[a subviews]objectAtIndex:1] isKindOfClass:[UIActivityIndicatorView class]])
+                                 {
+                                     [[[a subviews]objectAtIndex:1] removeFromSuperview];
+                                     
+                                }
+                            
+                             }
+                             else
+                             NSLog(@"Invalid Image Index - %d",i);
+                        
+                         });
+                  
+                         [NetworkIndicator stopLoading];
+                    
+                     });
+                }
+             
+            }
+        }else{
+            
+            [NetworkIndicator stopLoading];
+        }
+        
+        
+    }
+    
+    if (connection==refreshConnection) {
+
+        NSArray *arr=[NSJSONSerialization JSONObjectWithData:webData2 options:kNilOptions error:&err];
+        //  NSLog(@"error %@ ",err);
+        //NSLog(@"Refresh - %@" , [arr description]);
+
+        if (arr.count>0) {
+            
+            if ([[arr objectAtIndex:0]objectForKey:@"status"]) {
+                [self hideLoader];
+                
+            }else{
+                
+                
+                [CouponArr removeAllObjects];
+                
+                for (int i=0; i<arr.count; i++)
+                {
+                    pageNo++;
+                    NSDictionary *dic=[arr objectAtIndex:i];
+                    CouponInfo *Coupon=[[CouponInfo alloc]init];
+                    Coupon.isLoaded = @"NO";
+                    Coupon.CouponImage= [self mergeImageWith:nil];
+                    Coupon.C_Date=[dic objectForKey:@"c_date"];
+                    Coupon.C_Image=[dic objectForKey:@"c_image"];
+                    Coupon.C_Name=[dic objectForKey:@"c_name"];
+                    Coupon.C_Text=[dic objectForKey:@"c_text"];
+                    Coupon.C_ID=[dic objectForKey:@"id"];
+                    Coupon.To_Date=[dic objectForKey:@"to_date"];
+                    Coupon.Total_Like=[NSString stringWithFormat:@"%@", [dic objectForKey:@"total_like"]];
+                    Coupon.CouponNumber=[NSString stringWithFormat:@"%@",[dic objectForKey:@"coupan_number"]];
+                    NSURL *Shareurl=[NSURL URLWithString:[[dic objectForKey:@"c_share_image"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                    
+                    NSURLRequest *Sharerequest   = [NSURLRequest requestWithURL:Shareurl];
+                    [NSURLConnection sendAsynchronousRequest:Sharerequest queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                        
+                        if (connectionError == nil && data != nil)
+                        {
+                            UIImage *image = [UIImage imageWithData:data];
+                            if (image != nil)
+                            {
+                                //dispatch_async(dispatch_get_main_queue(), ^{
+                                Coupon.C_ShareImage=image;
+                                //  });
+                            }
+                            else
+                            {
+                                // NSLog(@"image is not downloaded");
+                            }
+                        }
+                        else if (connectionError != nil)
+                        {
+                            //  NSLog(@"Error %@",[connectionError description]);
+                        }
+                        else
+                        {
+                            // NSLog(@"No data could be downloaded");
+                        }
+                    }];
+                    
+                    [CouponArr addObject:Coupon];
+                    
+                }
+                
+                [self addSubViewsInScrolleView];
+                [self hideLoader];
+                [NetworkIndicator stopLoading];
+                
+                for(int i=0;i<CouponArr.count;i++){
+                dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                    
+                    [NetworkIndicator startLoading];
+                    
+                        NSURL *url=[NSURL URLWithString:[[ CouponArr[i] C_Image] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                        
+                        UIImage *cImage=[UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+                        [CouponArr[i] setCouponImage:[self mergeImageWith:cImage]];
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            //[self addSubViewsInScrolleView];
+                            
+                            UIView* a = [[HomeScrollView subviews] objectAtIndex:i];
+                            
+                            if(([a subviews] != nil)&&([a subviews].count != 0))
+                            {
+                                UIImageView* imageView = [[a subviews]objectAtIndex:0];
+                                imageView.image = [CouponArr[i] CouponImage];
+                                [CouponArr[i] setIsLoaded:@"YES"];
+                                
+                                if ([[[a subviews]objectAtIndex:1] isKindOfClass:[UIActivityIndicatorView class]])
+                                {
+                                    [[[a subviews]objectAtIndex:1] removeFromSuperview];
+                                    
+                                }
+                                
+                            }
+                            else
+                            NSLog(@"Invalid Image Index - %d",i);
+                            
+                        });
+                    
+                    [NetworkIndicator stopLoading];
+                    
+                });
+                }
+                
+            }
+            
+        }else{
+            
+            [self hideLoader];
+            [NetworkIndicator stopLoading];
+        }
+        
+            }
+    
+    if (connection==functionConnection) {
+        NSArray *arr=[NSJSONSerialization JSONObjectWithData:webData1 options:kNilOptions error:nil];
+        
+        [NetworkIndicator stopLoading];
+            NSLog(@"# Like Button Clicked");
+        
+        for (int i=0; i<arr.count; i++) {
+            NSDictionary *dic=[arr objectAtIndex:0];
+            if ([[dic objectForKey:@"status"] isEqualToString:@"success"] ) {
+                NSLog(@"# Do Like Succeed");
+                [likeArr addObject:[dic objectForKey:@"coupan_id"]];
+                [self nextpage];
+            }else if ([[dic objectForKey:@"status"] isEqualToString:@"failure"])
+            {
+                NSLog(@"# Do Like Failed");
+            }
+        }
+        
+    }
+  
+}
+
+- (void) backgroundService
+{
+    
+    
+}
+
+
+#pragma mark - add views in scrollview
+-(void)addSubViewsInScrolleView
+{
+    pageIndex=0;
+    int lak=0;
+    
+    //NSLog(@"CouponArr Size:%d",CouponArr.count);
+    
+    
+    
+    for (UIView *v in self.HomeScrollView.subviews) {
+                   [v removeFromSuperview];
+    }
+    
+ 
+       for (int i=0; i<CouponArr.count; i++) {
+   // if (CouponArr.count>0) {
+        CouponInfo *coupIfo=[CouponArr objectAtIndex:i];
+        UIView* CView=[[UIView alloc]initWithFrame:CGRectMake(i*320, 0, 320, 421)];
+        [self.HomeScrollView addSubview:CView];
+        
+        UIImageView* CouponImageView=[[UIImageView alloc]initWithFrame:CGRectMake(30,40,260,255)];
+           
+           CouponImageView.image=coupIfo.CouponImage;
+           [CView addSubview:CouponImageView];
+           
+        if([coupIfo.isLoaded isEqualToString:@"NO"])
+           {
+               UIActivityIndicatorView* loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+               loadingIndicator.center = CGPointMake(CView.frame.size.width/2, CView.frame.size.height/2-60);
+               [CView addSubview:loadingIndicator];
+               [loadingIndicator startAnimating];
+               
+           }
+        
+        UIButton *homePevious=[UIButton buttonWithType:UIButtonTypeCustom];
+        homePevious.frame=CGRectMake(0, 145, 25, 27);
+        [homePevious setImage:[UIImage imageNamed:@"arrow_left.png"] forState:UIControlStateNormal];
+        [CView addSubview:homePevious];
+        homePevious.tag=i;
+        [homePevious addTarget:self action:@selector(PreviousButClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIButton *HomeNext=[UIButton buttonWithType:UIButtonTypeCustom];
+        HomeNext.frame=CGRectMake(295, 145, 25, 27);
+        [HomeNext setImage:[UIImage imageNamed:@"arrow_right.png"] forState:UIControlStateNormal];
+        [CView addSubview:HomeNext];
+        [HomeNext addTarget:self action:@selector(nextButClicked:) forControlEvents:UIControlEventTouchUpInside];
+        HomeNext.tag=i;
+        
+        if (CouponArr.count==1) {
+            homePevious.alpha=0;
+            HomeNext.alpha=0;
+        }else if (i==0){
+        homePevious.alpha=0;
+        }else if (i==self.couponCounts-1){
+            HomeNext.alpha=0;
+        }
+        
+       UILabel *LikeLab=[[UILabel alloc]initWithFrame:CGRectMake(251, 6, 70, 21)];
+        LikeLab.text=[NSString stringWithFormat:@"%@ likes",coupIfo.Total_Like];
+        LikeLab.font=[UIFont systemFontOfSize:16];
+        LikeLab.textColor=[UIColor whiteColor];
+        [CView addSubview:LikeLab];
+        
+        if (likeArr.count>0) {
+            for (int j=0; j<likeArr.count; j++) {
+                if ([[likeArr objectAtIndex:j] isEqualToString:coupIfo.C_ID]) {
+                    int liked=[coupIfo.Total_Like intValue];
+                    liked=liked+1;
+                    LikeLab.text= [NSString stringWithFormat:@"%d likes",liked];
+                }
+            }
+            lak=1;
+        }else
+            LikeLab.text=[NSString stringWithFormat:@"%@ likes",coupIfo.Total_Like];
+
+        
+      UIImageView *ThumbImage=[[UIImageView alloc]initWithFrame:CGRectMake(229, 6, 20, 20)];
+        ThumbImage.image=[UIImage imageNamed:@"likeicon.png"];
+        [CView addSubview:ThumbImage];
+        
+        
+     UILabel*  CouponNoLab=[[UILabel alloc]initWithFrame:CGRectMake(4,311,140,21)];
+        CouponNoLab.text=coupIfo.CouponNumber;
+        CouponNoLab.textColor=[UIColor whiteColor];
+        CouponNoLab.font=[UIFont systemFontOfSize:14];
+        CouponNoLab.shadowColor=[UIColor whiteColor];
+        [CView addSubview:CouponNoLab];
+           
+    UILabel*  CouponNo=[[UILabel alloc]initWithFrame:CGRectMake(30,6,70,21)];
+       CouponNo.text=[NSString stringWithFormat:@"%d/%d",i+1,self.couponCounts];
+       CouponNo.textColor=[UIColor whiteColor];
+       CouponNo.font=[UIFont systemFontOfSize:18];
+       CouponNo.shadowColor=[UIColor whiteColor];
+       [CView addSubview:CouponNo];
+
+    
+     UITextView* descText=[[UITextView alloc]initWithFrame:CGRectMake(120, 305, 200, 80)];
+
+        descText.text=coupIfo.C_Text;
+        descText.textColor=[UIColor whiteColor];
+        descText.backgroundColor=[UIColor clearColor];
+        descText.font=[UIFont systemFontOfSize:12];
+        descText.textAlignment=NSTextAlignmentRight;
+        descText.editable=NO;
+        descText.userInteractionEnabled=NO;
+        [CView addSubview:descText];
+           //NSLog(@"5");
+               
+        //        UILabel *lab=[[UILabel alloc]initWithFrame:CGRectMake(71, 300, 248, 64)];
+//        lab.text=coupIfo.C_Text;
+//        lab.textColor=[UIColor whiteColor];
+//        lab.backgroundColor=[UIColor clearColor];
+//        lab.font=[UIFont systemFontOfSize:14];
+//        lab.textAlignment=NSTextAlignmentRight;
+//        lab.numberOfLines=3;
+////        descText.editable=NO;
+////        descText.userInteractionEnabled=NO;
+//        [CView addSubview:descText];
+        
+       UIButton* shareButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        shareButton.frame=CGRectMake(5,390,75,35) ;
+        [shareButton setImage:[UIImage imageNamed:@"share.png"] forState:UIControlStateNormal];
+        [CView addSubview:shareButton];
+        shareButton.tag=i;
+        [shareButton addTarget:self action:@selector(shareBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+      UIButton*  sendButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        sendButton.frame=CGRectMake(82,390,75,35) ;
+        [sendButton setImage:[UIImage imageNamed:@"send.png"] forState:UIControlStateNormal];
+        [CView addSubview:sendButton];
+        [sendButton addTarget:self action:@selector(SendBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        sendButton.tag=i;
+        
+      UIButton*  LikeButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        LikeButton.frame=CGRectMake(159,390,75,35) ;
+        [LikeButton setImage:[UIImage imageNamed:@"like.png"] forState:UIControlStateNormal];
+        [CView addSubview:LikeButton];
+        [LikeButton addTarget:self action:@selector(LikeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        LikeButton.tag=i;
+        
+      UIButton*  AddToFavButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        AddToFavButton.frame=CGRectMake(236,390,75,35) ;
+        [AddToFavButton setImage:[UIImage imageNamed:@"addtofav.png"] forState:UIControlStateNormal];
+        [CView addSubview:AddToFavButton];
+        [AddToFavButton addTarget:self action:@selector(addToFavoritBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        AddToFavButton.tag=i;
+           //NSLog(@"6");
+        if ([AppDelegate sharedInstance].DeviceHight==480)
+        {
+            CView.frame=CGRectMake(i*320, 0, 320, 370);
+            LikeLab.frame=CGRectMake(251, 0, 60, 20);
+            ThumbImage.frame=CGRectMake(229, 0, 20, 20);
+            CouponImageView.frame=CGRectMake(35, 25, 250, 240);
+            CouponNoLab.frame=CGRectMake(2,270,64,21);
+            descText.frame=CGRectMake(63, 265, 259, 64);
+             shareButton.frame=CGRectMake(5,335,75,35) ;
+            sendButton.frame=CGRectMake(82,335,75,35) ;
+            LikeButton.frame=CGRectMake(159,335,75,35) ;
+            AddToFavButton.frame=CGRectMake(236,335,75,35) ;
+            homePevious.frame=CGRectMake(0, 135, 25, 27);
+            HomeNext.frame=CGRectMake(295, 135, 25, 27);
+            
+        }
+   }
+
+    if (CouponArr.count==1) {
+        PreviousButton.alpha=0;
+        NextButton.alpha=0;
+    }
+    
+//    UISwipeGestureRecognizer *swipeLeft=[[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(LeftGestureForView:)];
+//    [HomeScrollView addGestureRecognizer:swipeLeft];
+//    [swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+//    
+//    UISwipeGestureRecognizer *swipRight=[[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(RightGestureForView:)];
+//    [HomeScrollView addGestureRecognizer:swipRight];
+//    [swipRight setDirection:UISwipeGestureRecognizerDirectionRight];
+    
+   // self.HomeScrollView.frame=CGRectMake(self.HomeScrollView.frame.origin.x, self.HomeScrollView.frame.origin.y,self.HomeScrollView.frame.size.width*(CouponArr.count) , self.HomeScrollView.frame.size.height);
+     self.HomeScrollView.contentSize=CGSizeMake(320*CouponArr.count, 421);
+    
+    if ([AppDelegate sharedInstance].DeviceHight==480)
+    {
+         self.HomeScrollView.contentSize=CGSizeMake(320*CouponArr.count, 370);
+    }
+    self.HomeScrollView.scrollEnabled=YES;
+ 
+}
+
+
+
+
+-(IBAction)nextButClicked:(id)sender
+{
+
+    CGRect frame;
+        if (pageIndex<CouponArr.count) {
+        
+        frame.origin.x = self.HomeScrollView.frame.size.width * (pageIndex+1);
+        frame.origin.y = 0;
+        frame.size = self.HomeScrollView.frame.size;
+        [self.HomeScrollView scrollRectToVisible:frame animated:YES];
+            
+        pageIndex++;
+        if (pageIndex==CouponArr.count-1) {
+          //  NextButton.alpha=0;
+        }
+    }
+}
+
+-(IBAction)PreviousButClicked:(id)sender
+{
+
+    CGRect frame;
+    if (pageIndex>0) {
+//        NextButton.alpha=1;
+//        if (CouponArr.count==1) {
+//            PreviousButton.alpha=0;
+//            NextButton.alpha=0;
+//        }
+                frame.origin.x = self.HomeScrollView.frame.size.width * (pageIndex-1);
+            frame.origin.y = 0;
+            frame.size = self.HomeScrollView.frame.size;
+            [self.HomeScrollView scrollRectToVisible:frame animated:YES];
+                pageIndex--;
+        
+        if (pageIndex==0) {
+           // PreviousButton.alpha=0;
+        }
+
+    }
+}
+
+-(void) refreshHomeScrollView:(int) pos
+{
+    CGRect frame;
+    frame.origin.x = self.HomeScrollView.frame.size.width * pos;
+    frame.origin.y = 0;
+    frame.size = self.HomeScrollView.frame.size;
+    [self.HomeScrollView scrollRectToVisible:frame animated:YES];
+}
+
+-(void)nextpage
+{
+    UILabel *LikeLab = [[self.HomeScrollView subviews][likeTag] subviews][3];
+    CouponInfo * cinfo = [CouponArr objectAtIndex:likeTag];
+    int likes =[cinfo.Total_Like intValue]+1;
+    NSLog(@"likeTag = %d Like=%@",likeTag,LikeLab.text);
+    LikeLab.text =[NSString stringWithFormat:@"%d likes",likes];
+    
+    [self refreshHomeScrollView:likeTag];
+    
+   
+}
+
+-(void)LeftGestureForView:(id)sender
+{
+    
+    UISwipeGestureRecognizer *Swipe=(UISwipeGestureRecognizer*)sender;
+    CGRect frame;
+    if (Swipe.direction==UISwipeGestureRecognizerDirectionLeft) {
+        if (pageIndex<CouponArr.count) {
+            
+            PreviousButton.alpha=1;
+            if (CouponArr.count==1) {
+                self.NextButton.alpha=0;
+                self.PreviousButton.alpha=0;
+            }
+
+            frame.origin.x = self.HomeScrollView.frame.size.width * (pageIndex+1);
+            frame.origin.y = 0;
+            frame.size = self.HomeScrollView.frame.size;
+            [self.HomeScrollView scrollRectToVisible:frame animated:YES];
+            pageIndex++;
+            if (pageIndex==CouponArr.count-1) {
+                NextButton.alpha=0;
+            }
+        }
+    }
+    
+}
+
+-(void)RightGestureForView:(id)sender
+{
+     UISwipeGestureRecognizer *Swipe=(UISwipeGestureRecognizer*)sender;
+    if (Swipe.direction==UISwipeGestureRecognizerDirectionRight) {
+       
+
+        CGRect frame;
+        if (pageIndex>0) {
+            
+            NextButton.alpha=1;
+            if (CouponArr.count==1) {
+                self.NextButton.alpha=0;
+                self.PreviousButton.alpha=0;
+            }
+            frame.origin.x = self.HomeScrollView.frame.size.width * (pageIndex-1);
+            frame.origin.y = 0;
+            frame.size = self.HomeScrollView.frame.size;
+            [self.HomeScrollView scrollRectToVisible:frame animated:YES];
+            pageIndex--;
+            
+            if (pageIndex==0) {
+                PreviousButton.alpha=0;
+            }
+            
+        }
+    }
+}
+
+#pragma mark - reload cell method
+
+-(void)reloadSingleCell
+{
+    [self hideLoader2];
+    NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:likeTag inSection:0];
+    NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
+    [HomeTableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationNone];
+}
+
+#pragma mark - Homecell btn methods
+
+-(void)shareBtnClicked:(id)sender
+{
+    UIButton *but=(UIButton*)sender;
+    
+    CouponInfo *info=[CouponArr objectAtIndex:but.tag];
+    
+    SLComposeViewController *controller = [SLComposeViewController
+                                           composeViewControllerForServiceType:SLServiceTypeFacebook];
+    SLComposeViewControllerCompletionHandler myBlock =
+    ^(SLComposeViewControllerResult result){
+        if (result == SLComposeViewControllerResultCancelled)
+        {
+            NSLog(@"Cancelled");
+        }
+        else
+        {
+            NSLog(@"Done");
+        }
+        [controller dismissViewControllerAnimated:YES completion:nil];
+    };
+    controller.completionHandler =myBlock;
+    //Adding the Text to the facebook post value from iOS
+    
+    NSString *GLink=[NSString stringWithFormat:@"\n https://play.google.com/store/apps/details?id=com.ps.coupon "];
+    NSString *ALink=[NSString stringWithFormat:@"\n https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=915787141&mt=8 "];
+    
+    NSString *AllStr=[NSString stringWithFormat:@" להורדה למכשירי   Androidלחצו כאן: %@ \n \n להורדה למכשירי iPhone לחצו כאן: %@ ",GLink,ALink];
+    
+    NSString *textLink1=@"רוצים גם אתם ליהנות מהקופונים השווים בישראל?\n";
+    NSString *text2=@"הורידו את אפליקציית טויס אר אס! \n\n";
+    
+    [controller setInitialText:[NSString stringWithFormat:@"%@ %@ %@",textLink1,text2,AllStr]];
+
+    //Adding the URL to the facebook post value from iOS
+   // [controller addURL:[NSURL URLWithString:info.C_Image]];
+    [controller addImage:info.C_ShareImage];
+    //Adding the Text to the facebook post value from iOS
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+-(void)SendBtnClicked:(id)sender
+{
+    UIButton *but=(UIButton*)sender;
+    
+    CouponInfo *info=[CouponArr objectAtIndex:but.tag];
+    
+    NSString *reqSysVer = @"6.0";
+    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
+    UIImage *AnImage=info.C_ShareImage;
+    if ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending)
+        //        displayLinkSupported = TRUE;
+    {
+        /*רוצים גם אתם ליהנות מהקופונים השווים בישראל?
+         
+         הורידו את אפליקציית טויס אר אס!
+         
+         
+         
+         להורדה למכשירי   Androidלחצו כאן:
+         
+         https://play.google.com/store/apps/details?id=com.ps.coupon
+         
+         להורדה למכשירי iPhone לחצו כאן:
+         
+         https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=915787141&mt=8*/
+        NSString *GLink=[NSString stringWithFormat:@"\n https://play.google.com/store/apps/details?id=com.ps.coupon "];
+        NSString *ALink=[NSString stringWithFormat:@"\n https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=915787141&mt=8 "];
+        
+        NSString *AllStr=[NSString stringWithFormat:@" להורדה למכשירי   Androidלחצו כאן: %@ \n \n להורדה למכשירי iPhone לחצו כאן: %@ ",GLink,ALink];
+        
+        NSString *textLink1=@"רוצים גם אתם ליהנות מהקופונים השווים בישראל?\n";
+        NSString *text2=@"הורידו את אפליקציית טויס אר אס!\n ";
+        
+        NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypeCopyToPasteboard, UIActivityTypePostToWeibo, UIActivityTypePrint, UIActivityTypeMessage];
+        
+        
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:[NSArray arrayWithObjects:textLink1,text2,AllStr,AnImage, nil] applicationActivities:nil];
+        
+        activityVC.excludedActivityTypes = excludeActivities;
+        
+        [self presentViewController:activityVC animated:YES completion:nil];
+        
+        
+//        [activityVC setCompletionHandler:^(NSString *activityType, BOOL completed)
+//         {
+//             NSLog(@"Activity = %@",activityType);
+//             NSLog(@"Completed Status = %d",completed);
+//             
+//             if (completed)
+//             {
+//                 UIAlertView *objalert = [[UIAlertView alloc]initWithTitle:@"Alert" message:@"Successfully Shared" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//                 [objalert show];
+//                 objalert = nil;
+//             } else
+//             {
+//                 //                 UIAlertView *objalert = [[UIAlertView alloc]initWithTitle:@"Alert" message:@"Unable To Share" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//                 //                 [objalert show];
+//                 //                 objalert = nil;
+//             }
+//         }];
+        
+        
+    }
+    else
+    {
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"share information" message:nil delegate:self cancelButtonTitle:@"ok" otherButtonTitles: nil];
+        [alert show];
+    }
+}
+
+-(void)LikeBtnClicked:(id)sender
+{
+    //[self showLoader2];
+    
+    [NetworkIndicator startLoading];
+    UIButton *but=(UIButton*)sender;
+    CouponInfo *info=[CouponArr objectAtIndex:but.tag];
+    likeTag=but.tag;
+   
+   // NSString *urlstr=LIKE_URL;
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    
+    //  http://198.12.150.189/~simssoe/index.php
+    NSString  *urlstring = Main_Like_Url;
+    
+    //[self showLoader];
+    
+    BOOL CheckUrl=YES;//[self isValidURL:[NSURL URLWithString:urlstring]];
+    
+    if (CheckUrl==YES) {
+        NSMutableData *body = [[NSMutableData alloc]init ];
+        NSString *boundary = @"---------------------------14737809831466499882746641449";
+        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+        [request setURL:[NSURL URLWithString:urlstring]];
+        [request setHTTPMethod:@"POST"];
+        
+        [request addValue:contentType forHTTPHeaderField:@"Content-Type"];
+        
+        NSString *first_name = @"Yes";
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"like\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithString:first_name] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSString *CouponId = info.C_ID;
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"coupan_id\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithString:CouponId] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSData *num = [[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"];
+        
+        NSString *deviceId=[[[[num description]
+                              stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                             stringByReplacingOccurrencesOfString: @">" withString: @""]
+                            stringByReplacingOccurrencesOfString: @" " withString: @""];
+        
+        if (deviceId==nil) {
+            deviceId=@"ae32877r840kg08967";
+        }
+        
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"device_id\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithString:deviceId] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        [request setHTTPBody:body];
+        
+        
+        //NSLog(@"Like - body: %@",[body description]);
+        functionConnection = [NSURLConnection connectionWithRequest:request delegate:self];
+        if(functionConnection)
+        {
+            webData1 = [[NSMutableData alloc]init];
+        }
+        else
+        {
+            
+            
+        }
+    }else{
+    
+        urlstring = LIKE_URL;
+        
+    NSMutableData *body = [[NSMutableData alloc]init ];
+    NSString *boundary = @"---------------------------14737809831466499882746641449";
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+    [request setURL:[NSURL URLWithString:urlstring]];
+    [request setHTTPMethod:@"POST"];
+    
+    [request addValue:contentType forHTTPHeaderField:@"Content-Type"];
+    
+    NSString *first_name = @"Yes";
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"like\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithString:first_name] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSString *CouponId = info.C_ID;
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"coupan_id\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithString:CouponId] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSData *num = [[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"];
+    
+    NSString *deviceId=[[[[num description]
+                          stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                         stringByReplacingOccurrencesOfString: @">" withString: @""]
+                        stringByReplacingOccurrencesOfString: @" " withString: @""];
+    
+    if (deviceId==nil) {
+        deviceId=@"ae32877r840kg08967";
+    }
+    
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"device_id\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithString:deviceId] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setHTTPBody:body];
+    functionConnection = [NSURLConnection connectionWithRequest:request delegate:self];
+    if(functionConnection)
+    {
+        webData1 = [[NSMutableData alloc]init];
+    }
+    else
+    {
+        
+        
+    }
+    }
+}
+
+-(void)addToFavoritBtnClicked:(id)sender
+{
+   // [self showLoader2];
+    
+    UIButton *But=(UIButton*)sender;
+    CouponInfo *info=[CouponArr objectAtIndex:But.tag];
+    UIImage *imageData=info.CouponImage;
+    
+    if (imageData) {
+        
+        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self saveImage:imageData WithCupInfo:info];
+        });
+    }
+
+}
+
+#pragma mark - saveImage method
+
+- (void)saveImage:(UIImage *)image  WithCupInfo:(CouponInfo*)CoupInfo {
+    //  Make file name first
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showLoader];
+    });
+    
+    /*
+    UIView *aView=[[UIView alloc]initWithFrame:CGRectMake(90,250, 150,60)];
+    aView.backgroundColor=[UIColor darkGrayColor];
+    aView.layer.cornerRadius=2;
+    aView.layer.borderWidth=1;
+    aView.layer.borderColor=[UIColor colorWithWhite:0.8 alpha:1].CGColor;
+    aView.layer.masksToBounds=YES;
+    //        indicatorView=[[UIView alloc]initWithFrame:CGRectMake(60, 250, 200, 100)];
+    //    indicatorView.backgroundColor=[UIColor whiteColor];
+    //    indicatorView.layer.cornerRadius=8;
+    //    indicatorView.layer.masksToBounds=YES;
+    //    [Parentview addSubview:indicatorView];
+    
+    progressView  = [[AMPActivityIndicator alloc] initWithFrame:CGRectMake(0,0, 0, 0)];
+    progressView.backgroundColor =[UIColor clearColor];
+    progressView.opaque = YES;
+    [progressView setBarColor:[UIColor grayColor]];
+    [progressView setBarColor:[UIColor grayColor]];
+    [progressView setBarColor:[UIColor grayColor]];
+    [progressView setBarHeight:7.0f];
+    [progressView setBarWidth:2.0f];
+    [progressView setAperture:10.0f];
+    [progressView setCenter:CGPointMake(30, 30)];
+    
+    
+    //  [Parentview addSubview:progressView];
+    // [self.view addSubview:parantView];
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectZero] ;
+    headerLabel.backgroundColor = [UIColor clearColor];
+    headerLabel.font = [UIFont boldSystemFontOfSize:14];
+    headerLabel.frame = CGRectMake(50,15,90,30);
+    headerLabel.text= @"Wait...";
+    headerLabel.textAlignment=NSTextAlignmentCenter;
+    headerLabel.textColor=[UIColor whiteColor];
+    [aView addSubview:progressView];
+    [aView addSubview:headerLabel];
+    //[indicatorView addSubview:headerLabel];
+    [self.view addSubview:aView];
+    [progressView startAnimating];*/
+    
+    CouponInfo *Info=[[CouponInfo alloc]init];
+    
+    Info.C_ID=CoupInfo.C_ID;
+    Info.C_Date=CoupInfo.C_Date;
+   // Info.C_Image=CoupInfo.ID;
+    Info.C_Name=CoupInfo.C_Name;
+    Info.C_Text=CoupInfo.C_Text;
+    Info.To_Date=CoupInfo.To_Date;
+    Info.Total_Like=CoupInfo.Total_Like;
+    
+    if (likeArr.count>0) {
+        for (int i=0; i<likeArr.count; i++) {
+            if ([[likeArr objectAtIndex:i] isEqualToString:CoupInfo.C_ID]) {
+                int liked=[CoupInfo.Total_Like intValue];
+                liked=liked+1;
+                Info.Total_Like= [NSString stringWithFormat:@"%d",liked];
+            }
+        }
+    }
+    
+    
+    Info.CouponNumber=CoupInfo.CouponNumber;
+    BOOL check=[[DataBase getSharedInstance]CheckCouponId:CoupInfo.C_ID];
+    if (check==NO) {
+        NSString *filename = [CoupInfo.C_ID stringByAppendingString:@".png"]; // or .jpg
+    
+        //  Get the path of the app documents directory
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+        //  Append the filename and get the full image path
+        NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:filename];
+    
+        //  Now convert the image to PNG/JPEG and write it to the image path
+        NSData *imageData = UIImagePNGRepresentation(image);
+        [imageData writeToFile:savedImagePath atomically:NO];
+    
+        //  Here you save the savedImagePath to your DB
+        Info.C_Image=savedImagePath;
+        NSString *ShareFileName=[CoupInfo.C_ID stringByAppendingString:@"Share.png"];
+        NSString *ShareSavedImagePath=[documentsDirectory stringByAppendingPathComponent:ShareFileName];
+        NSData *ShareImageData=UIImagePNGRepresentation(CoupInfo.C_ShareImage);
+        
+        [ShareImageData writeToFile:ShareSavedImagePath atomically:NO];
+        Info.C_sImageUrl=ShareSavedImagePath;
+    
+        
+        [[DataBase getSharedInstance]AddToFavoriteListData:Info];
+        //BOOL suc=[[DataBase getSharedInstance]AddToFavoriteListData:Info];
+//        if (suc==YES) {
+//            //[aView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:5];
+//        }else{
+//        [aView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:5];
+//        }
+        
+    }
+    //[aView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:4];
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self hideLoader];
+    });
+    
+}
+
+#pragma mark - retrive Image method
+
+- (UIImage *)loadImage:(NSString *)filePath  {
+    return [UIImage imageWithContentsOfFile:filePath];
+}
+
+#pragma mark - custom Activityindicator method view
+-(void)showLoader{
+    Parentview=[[UIView alloc]initWithFrame:CGRectMake(90,200, 150,50)];
+    Parentview.backgroundColor=[UIColor grayColor];
+    Parentview.layer.cornerRadius=2;
+    Parentview.layer.borderWidth=1;
+    Parentview.layer.borderColor=[UIColor lightGrayColor].CGColor;
+    Parentview.layer.masksToBounds=YES;
+  
+    
+    
+    progressView  = [[AMPActivityIndicator alloc] initWithFrame:CGRectMake(0,0, 0, 0)];
+    progressView.backgroundColor =[UIColor clearColor];
+    progressView.opaque = YES;
+    [progressView setBarColor:[UIColor whiteColor ]];
+    [progressView setBarHeight:7.0f];
+    [progressView setBarWidth:2.0f];
+    [progressView setAperture:10.0f];
+    [progressView setCenter:CGPointMake(30, 25)];
+    
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectZero] ;
+    headerLabel.backgroundColor = [UIColor clearColor];
+    headerLabel.font = [UIFont boldSystemFontOfSize:14];
+    headerLabel.frame = CGRectMake(60,15,70,20);
+    headerLabel.text= @"Loading...";
+    headerLabel.textAlignment=NSTextAlignmentCenter;
+    headerLabel.textColor=[UIColor whiteColor];
+    [Parentview addSubview:progressView];
+    [Parentview addSubview:headerLabel];
+    [self.view addSubview:Parentview];
+    [progressView startAnimating];
+}
+-(void)hideLoader{
+    [Parentview removeFromSuperview];
+}
+
+#pragma mark - custom Activityindicator 2 method view
+
+-(void)showLoader2{
+   animateView=[[UIView alloc]initWithFrame:CGRectMake(35,250, 250,60)];
+    animateView.backgroundColor=[UIColor darkGrayColor];
+    animateView.layer.cornerRadius=2;
+    animateView.layer.borderWidth=1;
+    animateView.layer.borderColor=[UIColor colorWithWhite:0.8 alpha:1].CGColor;
+    animateView.layer.masksToBounds=YES;
+    //        indicatorView=[[UIView alloc]initWithFrame:CGRectMake(60, 250, 200, 100)];
+    //    indicatorView.backgroundColor=[UIColor whiteColor];
+    //    indicatorView.layer.cornerRadius=8;
+    //    indicatorView.layer.masksToBounds=YES;
+    //    [Parentview addSubview:indicatorView];
+    
+    progressView  = [[AMPActivityIndicator alloc] initWithFrame:CGRectMake(0,0, 0, 0)];
+    progressView.backgroundColor =[UIColor clearColor];
+    progressView.opaque = YES;
+    [progressView setBarColor:[UIColor grayColor]];
+    [progressView setBarColor:[UIColor grayColor]];
+    [progressView setBarColor:[UIColor grayColor]];
+    [progressView setBarHeight:7.0f];
+    [progressView setBarWidth:2.0f];
+    [progressView setAperture:10.0f];
+    [progressView setCenter:CGPointMake(30, 25)];
+    
+    
+    //  [Parentview addSubview:progressView];
+    // [self.view addSubview:parantView];
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectZero] ;
+    headerLabel.backgroundColor = [UIColor clearColor];
+    headerLabel.font = [UIFont boldSystemFontOfSize:14];
+    headerLabel.frame = CGRectMake(60,15,90,30);
+    headerLabel.text= @"Wait...";
+    headerLabel.textAlignment=NSTextAlignmentCenter;
+    headerLabel.textColor=[UIColor whiteColor];
+    [animateView addSubview:progressView];
+    [animateView addSubview:headerLabel];
+    //[indicatorView addSubview:headerLabel];
+    [self.view addSubview:animateView];
+    [progressView startAnimating];
+}
+-(void)hideLoader2{
+    //[progressView removeFromSuperview];
+ //   animateView.frame=CGRectMake(0, 0, 0, 0);
+ //   animateView.hidden=YES;
+    [animateView removeFromSuperview];
+   
+//    [self.view addSubview:BackRedBagView];
+//    [self.view addSubview:self.HomeScrollView];
+}
+
+#pragma mark - refresh  Button method
+
+-(IBAction)RefreshButtonClicked:(id)sender
+{
+    
+    if([NetworkIndicator getCounter] < 1)
+        [self RefreshCoupons];
+    
+}
+
+-(void)afterRefreshCall
+{
+    pageIndex=0;
+
+    //  for (int i=0; i<CouponArr.count; i++) {
+    if (CouponArr.count>0) {
+        
+        
+//        CouponInfo *coupIfo=[CouponArr objectAtIndex:0];
+//        
+//        
+//        
+//        CouponImageView.image=coupIfo.CouponImage;
+//        
+//        //        NSData *imgData=[NSData dataWithContentsOfURL:[NSURL URLWithString:[coupIfo.C_Image stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+//        //        [CouponImageView setImage:[UIImage imageWithData:imgData]];
+//        
+//               LikeLab.text=[NSString stringWithFormat:@"%@ likes",coupIfo.Total_Like];
+//        
+//    if (likeArr.count>0) {
+//            for (int j=0; j<likeArr.count; j++) {
+//                if ([[likeArr objectAtIndex:j] isEqualToString:coupIfo.C_ID]) {
+//                    int liked=[coupIfo.Total_Like intValue];
+//                    liked=liked+1;
+//                    LikeLab.text= [NSString stringWithFormat:@"%d likes",liked];
+//                }
+//            }
+//            lak=1;
+//        }
+//        
+//        
+//       
+//        CouponNoLab.text=coupIfo.CouponNumber;
+//        
+//        
+//        
+//        
+//        descText.text=coupIfo.C_Text;
+//    
+//        
+//        
+//
+//        [shareButton addTarget:self action:@selector(shareBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        
+//        [sendButton addTarget:self action:@selector(SendBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        
+//        [LikeButton addTarget:self action:@selector(LikeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        
+//        [AddToFavButton addTarget:self action:@selector(addToFavoritBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        
+        
+    }
+    
+    if (CouponArr.count==1) {
+        PreviousButton.alpha=0;
+        NextButton.alpha=0;
+    }
+    // self.HomeScrollView.frame=CGRectMake(self.HomeScrollView.frame.origin.x, self.HomeScrollView.frame.origin.y,self.HomeScrollView.frame.size.width*(CouponArr.count) , self.HomeScrollView.frame.size.height);
+    // self.HomeScrollView.contentSize=CGSizeMake(320*CouponArr.count, 421);
+    
+    [self hideLoader];
+}
+
+#pragma mark - scrollview delegates
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    /*
+    if (!scrollDirectionDetermined) {
+        CGFloat pageWidth = self.HomeScrollView.frame.size.width;
+		int page = floor((self.HomeScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+		pageIndex = page;
+        
+        NSLog(@"PageIndex = %d",pageIndex);
+       
+    }*/
+  
+}
+
+
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)tableView {
+    
+    
+    CGFloat pageWidth = self.HomeScrollView.frame.size.width;
+    int page = floor((self.HomeScrollView.contentOffset.x - pageWidth/2) / pageWidth) + 1;
+    int totalPages = floor(self.HomeScrollView.contentSize.width / pageWidth);
+    NSLog(@"Page : %d / %d , PN:%d",page,totalPages,pageNo);
+    pageIndex = page;
+    if((page+3 >= totalPages)&&(!isSwaped) && (totalPages < self.couponCounts))
+        [self SwapCoupnCallWebservice];
+    
+
+
+}
+//
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    scrollDirectionDetermined = NO;
+
+    
+    /*
+    CGFloat pageWidth = self.HomeScrollView.frame.size.width;
+    
+        NSLog(@"End Offset: (x=%f,y=%f)",self.HomeScrollView.contentOffset.x,self.HomeScrollView.contentOffset.y);
+
+  
+    int page = floor((self.HomeScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    
+    int totalPages = floor(self.HomeScrollView.contentSize.width / pageWidth);
+    
+   // NSLog(@"totalPages = %d",totalPages);
+    
+    if((page+2 >= totalPages)&&([NetworkIndicator getCounter] < 2))
+        [self SwapCoupnCallWebservice];
+    pageIndex = page;
+
+    
+   //NSLog(@"EndDragging-Page : %d / %d",page,totalPages);
+     */
+    
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+	scrollDirectionDetermined = NO;
+    
+}
+
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    
+//    if ([segue.destinationViewController isKindOfClass:[WebSiteViewController class]]) {
+//        WebSiteViewController *WebSite=(WebSiteViewController*)[segue destinationViewController];
+//        
+//    }
+}
+
+- (IBAction)changePage {
+	// Update the scroll view to the appropriate page
+	CGRect frame;
+	frame.origin.x = self.HomeScrollView.frame.size.width * self.pageControl.currentPage;
+	frame.origin.y = 0;
+	frame.size = self.HomeScrollView.frame.size;
+	[self.HomeScrollView scrollRectToVisible:frame animated:YES];
+	
+	// Keep track of when scrolls happen in response to the page control
+	// value changing. If we don't do this, a noticeable "flashing" occurs
+	// as the the scroll delegate will temporarily switch back the page
+	// number.
+	scrollDirectionDetermined = YES;
+}
+
+-(void)SwapCoupnCallWebservice
+{
+    isSwaped = YES;
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    //  http://198.12.150.189/~simssoe/index.php
+    NSString  *urlstring = Main_Coupon_Url;
+    
+    //[self showLoader];
+    
+    [NetworkIndicator startLoading];
+    
+    NSLog(@"calling SwapCouponService");
+    
+    //https://toysruscoupon.nethost.co.il/webservices/index.php?action=getCoupan&coupan=Yes&device_id=dviceid123458&page=1items=2
+    
+    BOOL CheckUrl=YES;// [self isValidURL:[NSURL URLWithString:urlstring]];
+    
+    if (CheckUrl==YES) {
+        NSMutableData *body = [[NSMutableData alloc]init ];
+        NSString *boundary = @"---------------------------14737809831466499882746641449";
+        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+        [request setURL:[NSURL URLWithString:urlstring]];
+        [request setHTTPMethod:@"POST"];
+        
+        [request addValue:contentType forHTTPHeaderField:@"Content-Type"];
+        
+        NSString *first_name = @"Yes";
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"coupan\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithString:first_name] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSData *num = [[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"];
+        NSString *deviceId=[[[[num description]
+                              stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                             stringByReplacingOccurrencesOfString: @">" withString: @""]
+                            stringByReplacingOccurrencesOfString: @" " withString: @""];
+        
+        if (deviceId==nil) {
+            deviceId=@"ae32877r840kg08967";
+        }
+        
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"device_id\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithString:deviceId] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        
+        NSLog(@"Total Page Number = %d",pageNo);
+        
+        NSString *page=[NSString stringWithFormat:@"%d",pageNo];
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"page\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[page dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSString *items=@"2";
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"items\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[items dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        [request setHTTPBody:body];
+        couponConnection = [NSURLConnection connectionWithRequest:request delegate:self];
+        
+        //NSLog(@"SwapCoupanCall- RequestBody%@",[body description]);
+        if(couponConnection)
+        {
+            webData = [[NSMutableData alloc]init];
+        }
+        else
+        {
+            
+            
+        }
+        
+    }
+    
+
+}
+
+-(UIImage*) mergeImageWith:(UIImage*)couponImg
+{
+    UIImage *bgImg = [UIImage imageNamed:@"imgbg.png"];
+    if (couponImg == nil) {
+        return  bgImg;
+    }
+    
+//  couponImg = [UIImage imageNamed:@"4027.jpg"];
+    UIGraphicsBeginImageContext(bgImg.size);
+    [bgImg drawInRect:CGRectMake(0, 0, bgImg.size.width, bgImg.size.height)];
+    [couponImg drawInRect:CGRectMake((bgImg.size.width - couponImg.size.width)/2, (bgImg.size.height - couponImg.size.height)/2, couponImg.size.width, couponImg.size.height)];
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return result;
+}
+
+
+-(void)RefreshCoupons
+{
+  
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    //  http://198.12.150.189/~simssoe/index.php
+    NSString  *urlstring = Main_Coupon_Url;
+    
+    [self showLoader];
+    
+    pageNo = 0;
+    [NetworkIndicator startLoading];
+    
+    NSLog(@"calling RefreshCoupons");
+    
+    //https://toysruscoupon.nethost.co.il/webservices/index.php?action=getCoupan&coupan=Yes&device_id=dviceid123458&page=1items=2
+    
+    BOOL CheckUrl=YES;// [self isValidURL:[NSURL URLWithString:urlstring]];
+    
+    if (CheckUrl==YES) {
+        NSMutableData *body = [[NSMutableData alloc]init ];
+        NSString *boundary = @"---------------------------14737809831466499882746641449";
+        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+        [request setURL:[NSURL URLWithString:urlstring]];
+        [request setHTTPMethod:@"POST"];
+        
+        [request addValue:contentType forHTTPHeaderField:@"Content-Type"];
+        
+        NSString *first_name = @"Yes";
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"coupan\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithString:first_name] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSData *num = [[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"];
+        NSString *deviceId=[[[[num description]
+                              stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                             stringByReplacingOccurrencesOfString: @">" withString: @""]
+                            stringByReplacingOccurrencesOfString: @" " withString: @""];
+        
+        if (deviceId==nil) {
+            deviceId=@"ae32877r840kg08967";
+        }
+        
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"device_id\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithString:deviceId] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        
+        //NSLog(@"Total Page Number = %d",0);
+        
+        NSString *page=[NSString stringWithFormat:@"%d",0];
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"page\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[page dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSString *items=@"10";
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"items\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[items dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        [request setHTTPBody:body];
+        refreshConnection = [NSURLConnection connectionWithRequest:request delegate:self];
+        
+        //NSLog(@"SwapCoupanCall- RequestBody%@",[body description]);
+        if(refreshConnection)
+        {
+            webData2 = [[NSMutableData alloc]init];
+        }
+               
+    }
+    
+    
+
+    
+    
+}
+
+@end

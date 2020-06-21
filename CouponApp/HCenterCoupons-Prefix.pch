@@ -1,0 +1,91 @@
+//
+//  Prefix header
+//
+//  The contents of this file are implicitly included at the beginning of every source file.
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import "AppDelegate.h"
+
+#define COUPON_URL @"http://toysrsuscoupon.com/webservices/index.php?action=getCoupan"
+
+#define PUT_GCM @"http://toysrsuscoupon.com/webservices/index.php?action=putGCM"
+
+#define LIKE_URL @"http://toysrsuscoupon.com/webservices/index.php?action=dolike"
+
+#define GET_STORE @"http://toysrsuscoupon.com/webservices/index.php?action=getStore&store=Yes"
+
+#define GET_STOREBY_CITY @"http://toysrsuscoupon.com/webservices/index.php?action=doGetStoreBycity&city=%@"
+
+#define GET_POLICY @"http://toysrsuscoupon.com/webservices/index.php?action=getPolicy&policy=Yes"
+
+
+//#define Main_Count_Url @"http://192.168.1.25/hcenter/webservices/index.php?version=v2&action=getCoupanCount"
+//#define Main_Thumb_Url @"http://192.168.1.25/hcenter/webservices/index.php?version=v2&action=getCoupanThumbs"
+//#define Main_Coupon_Url @"http://192.168.1.25/hcenter/webservices/index.php?version=v2&action=getCoupan"
+//
+//#define Main_Coupon_Status_Url @"http://192.168.1.25/hcenter/webservices/index.php?version=v2&action=getCouponsStatus&coupon_names"
+//
+//#define Main_Put_Gcm @"http://192.168.1.25/hcenter/webservices/index.php?version=v2&action=putGCM"
+//
+//#define Main_Like_Url @"http://192.168.1.25/hcenter/webservices/index.php?version=v2&action=dolike"
+//
+//#define Main_Get_Store @"http://192.168.1.25/hcenter/webservices/index.php?version=v2&action=getStore&store=Yes"
+//
+//#define Main_Get_StoreBy_City @"http://192.168.1.25/hcenter/webservices/index.php?version=v2&action=doGetStoreBycity&city=%@"
+//
+//#define MAin_Get_Policy @"http://192.168.1.25/hcenter/webservices/index.php?version=v2&action=getPolicy&policy=Yes"
+
+
+
+//#define Main_Count_Url @"http://hcenter.nethost.co.il/NEWCMS/webservices/index.php?version=v2&action=getCoupanCount"
+//#define Main_Thumb_Url @"http://hcenter.nethost.co.il/NEWCMS/webservices/index.php?version=v2&action=getCoupanThumbs"
+//#define Main_Coupon_Url @"http://hcenter.nethost.co.il/NEWCMS/webservices/index.php?version=v2&action=getCoupan"
+//
+//#define Main_Coupon_Status_Url @"http://hcenter.nethost.co.il/NEWCMS/webservices/index.php?version=v2&action=getCouponsStatus&coupon_names"
+//
+//#define Main_Put_Gcm @"http://hcenter.nethost.co.il/NEWCMS/webservices/index.php?version=v2&action=putGCM"
+//
+//#define Main_Like_Url @"http://hcenter.nethost.co.il/NEWCMS/webservices/index.php?version=v2&action=dolike"
+//
+//#define Main_Get_Store @"http://hcenter.nethost.co.il/NEWCMS/webservices/index.php?version=v2&action=getStore&store=Yes"
+//
+//#define Main_Get_StoreBy_City @"http://hcenter.nethost.co.il/NEWCMS/webservices/index.php?version=v2&action=doGetStoreBycity&city=%@"
+//
+//#define MAin_Get_Policy @"http://hcenter.nethost.co.il/NEWCMS/webservices/index.php?version=v2&action=getPolicy&policy=Yes"
+
+
+
+#define Main_Banner_Url @"http://hcenter.nethost.co.il/webservices/index.php?version=v2&action=getBannerUrl"
+#define Main_Count_Url @"http://hcenter.nethost.co.il/webservices/index.php?version=v2&action=getCoupanCount"
+#define Main_Thumb_Url @"http://hcenter.nethost.co.il/webservices/index.php?version=v2&action=getCoupanThumbs"
+#define Main_Coupon_Url @"http://hcenter.nethost.co.il/webservices/index.php?version=v2&action=getCoupan"
+
+#define Main_Coupon_Status_Url @"http://hcenter.nethost.co.il/webservices/index.php?version=v2&action=getCouponsStatus&coupon_names"
+
+#define Main_Put_Gcm @"http://hcenter.nethost.co.il/webservices/index.php?version=v2&action=putGCM"
+
+#define Main_Like_Url @"http://hcenter.nethost.co.il/webservices/index.php?version=v2&action=dolike"
+
+#define Main_Get_Store @"http://hcenter.nethost.co.il/webservices/index.php?version=v2&action=getStore&store=Yes"
+
+#define Main_Get_StoreBy_City @"http://hcenter.nethost.co.il/webservices/index.php?version=v2&action=doGetStoreBycity&city=%@"
+
+#define MAin_Get_Policy @"http://hcenter.nethost.co.il/webservices/index.php?version=v2&action=getPolicy&policy=Yes"
+//
+
+#endif
+
+
+/*("device_id", Data.DEVICE_ID));
+ params.add(new BasicNameValuePair("device_name", Data.DEVICE_NAME));
+ params.add(new BasicNameValuePair("device_gcm", Data.DEVICE_GCMID));
+ params.add(new BasicNameValuePair("device_type", Data.DEVICE_TYPE));*/

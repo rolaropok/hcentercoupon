@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[HomeViewController connection:didReceiveData:]:HomeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "refreshConnection">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeViewController connection:didReceiveResponse:]:HomeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "refreshConnection">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__33-[HomeViewController viewDidLoad]_block_invoke_2:HomeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[HomeScrollView subviews] objectAtIndex:2]">
+            </PersistentString>
+            <PersistentString
+               value = "backgroundImage.size">
+            </PersistentString>
+            <PersistentString
+               value = "watermarkImage.size">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__33-[HomeViewController viewDidLoad]_block_invoke:HomeViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeViewController addSubViewsInScrolleView]:HomeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[CView subviews][0]">
+            </PersistentString>
+            <PersistentString
+               value = "descText.text">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeViewController connectionDidFinishLoading:]:HomeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "refreshConnection">
+            </PersistentString>
+            <PersistentString
+               value = "couponConnection">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HomeViewController nextpage]:HomeViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "LikeLab.text">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
